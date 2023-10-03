@@ -1,5 +1,6 @@
 package med.voll.api.controller;
 
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import med.voll.api.domain.consulta.AgendaDeConsultaService;
 import med.voll.api.domain.consulta.DatosAgendarConsulta;
@@ -12,9 +13,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
+/*El Controller solo tiene que comunicarse con un API externo*/
 @Controller
 @ResponseBody
 @RequestMapping("/consultas")
+@SecurityRequirement(name = "bearer-key")
 public class ConsultaController {
 
     @Autowired
@@ -25,10 +28,11 @@ public class ConsultaController {
     public ResponseEntity agendar(@RequestBody @Valid DatosAgendarConsulta datosAgendarConsulta)
     {
 
-        agendaDeConsultaService.agendar(datosAgendarConsulta);
+        var response = agendaDeConsultaService.agendar(datosAgendarConsulta);
 
-        System.out.println(datosAgendarConsulta);
-        return ResponseEntity.ok(new DatosDetalleConsulta(null,null,null,null));
+
+        //
+        return ResponseEntity.ok(response);
     }
 
 

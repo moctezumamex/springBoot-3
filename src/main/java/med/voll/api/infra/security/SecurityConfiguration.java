@@ -28,8 +28,9 @@ public class SecurityConfiguration {
         return httpSecurity.csrf(csrf -> csrf.disable())
                 .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS))//Le indicamos a SPRING el tipo de sesión
                 .authorizeHttpRequests((authorize) ->
-                        authorize.requestMatchers(HttpMethod.POST, "/login") //Si son POST y van a l login
+                        authorize.requestMatchers(HttpMethod.POST,"/login") //Si son POST y van a l login
                                 .permitAll() //Se tienen que permitir todas las conexiones
+                                .requestMatchers("/v3/api-docs/**", "/swagger-ui.html", "/swagger-ui/**").permitAll()
                                 .anyRequest() //Cualquier request
                                 .authenticated()) //tiene que ser autenticado
                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
